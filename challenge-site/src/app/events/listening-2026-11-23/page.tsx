@@ -48,7 +48,7 @@ import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
 import { readScreeningView } from '@/lib/screening/screening-store.server';
 import { REVIEW_WINDOW_HOURS, VOTING_PERIOD_HOURS } from '@/lib/sessions/session-rules';
 import { sessionDeepiContext } from '@/lib/sessions/session-deepi-context';
-import { meetingShortDate, sessionSectionLabels, type MeetingRef } from '@/lib/sessions/session-labels';
+import { meetingShortDate, sessionSectionLabels, sessionWeekLabel, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
 import {
   draftBallotBanner,
@@ -67,13 +67,16 @@ import { SITE_NAME } from '@/lib/site-metadata';
 export const dynamic = 'force-dynamic';
 
 const DESCRIPTION =
-  'DP Listening Experiment 1/4, 23 November 2026: results of the 16 November ballot, the quorum tie, the interim council and a book club. The record, the draft ballot, the community review, council screening and the vote, all on one page.';
+  'DP Listening Experiment 1/4, November 23–29, 2026: results of the 16 November ballot, the quorum tie, the interim council and a book club. The record, the draft ballot, the community review, council screening and the vote, all on one page.';
 
 const MEETING: MeetingRef = { date: SESSION.date, meetingTitle: SESSION.meetingTitle, seriesTitle: SESSION.title };
 const LABELS = sessionSectionLabels(MEETING);
+/** The session is the week; the meeting was on its first day. */
+const WEEK = sessionWeekLabel(SESSION.date, { year: true });
+const PREVIOUS_WEEK = sessionWeekLabel('2026-11-16');
 
 export const metadata: Metadata = {
-  title: `${SESSION.meetingTitle}, ${LISTENING_1123_DATE_LABEL} (${SESSION.title}) | ${SITE_NAME}`,
+  title: `${SESSION.meetingTitle}, ${WEEK} (${SESSION.title}) | ${SITE_NAME}`,
   description: DESCRIPTION,
   alternates: { canonical: LISTENING_1123_EVENT_PATH },
   // Not for search engines: whether meeting transcripts are public is not yet a settled policy.
@@ -153,10 +156,11 @@ export default async function Listening20261123Page({ searchParams }: Props) {
   return (
     <SessionPageShell
       meeting={MEETING}
+      sessionWeek
       dateHref="/roundups/2026-11-23"
       whenLine={
         <>
-          {LISTENING_1123_TIME_LABEL} · Zoom ·{' '}
+          Meeting held {LISTENING_1123_DATE_LABEL}, {LISTENING_1123_TIME_LABEL} · Zoom ·{' '}
           <a href={LISTENING_1123_LUMA_URL} className={linkClass} rel="noopener noreferrer">
             Luma
           </a>
@@ -207,7 +211,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         <a href="#propose-next" className={linkClass}>Propose for next session</a>
         <a href="#phase" className={linkClass}>Where this session is</a>
         {showBallot ? <a href="#vote" className={linkClass}>Vote</a> : null}
-        <a href="#ballot-results" className={linkClass}>16 November results</a>
+        <a href="#ballot-results" className={linkClass}>{PREVIOUS_WEEK} results</a>
         <a href="#invite" className={linkClass}>Invite others</a>
         <a href="#draft" className={linkClass}>Meeting draft</a>
         <a href="#summary" className={linkClass}>Meeting summary</a>
@@ -229,7 +233,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         <BallotResultsSummary
           slug="meta-governance-2026-11-16"
           pageHref="/events/meta-governance-2026-11-16"
-          heading="Results of the 16 November ballot"
+          heading={`Results of the ${PREVIOUS_WEEK} ballot`}
         />
 
         <SessionInvite path={LISTENING_1123_EVENT_PATH} />
