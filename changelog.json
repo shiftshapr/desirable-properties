@@ -3,6 +3,7 @@
   "project": "desirable-properties",
   "site": "desirableproperties.org",
   "entries": [
+    {"id": "book-club-block-pad-link-2026-11-27", "date": "2026-11-27", "status": "open", "title": "Book club notice links to the Book Club pad", "summary": "The notice that the book club starts on Monday 30 November now has a button to the Book Club pad. The same notice is at the top of the 30 November session page until that meeting is over, and further down the page afterwards."},
     {"id": "q1-75-active-voting-body-2026-11-26", "date": "2026-11-26", "status": "open", "title": "Quorum option on the 23 November ballot: 75% of the active voting body", "summary": "The host changed the last option of question 1 on the 23 November ballot during council screening, before voting opened: it was 25% of the active voting body and is now 75% of the active voting body. The active voting body is about 28 people (the 24 who voted on the 16 November ballot and 4 more who spoke in the 23 November session), so 25% would be 7 votes, too few to stand for the group; 75% is 21 votes. A dated line under the question says what changed and why. The other options are unchanged."},
     {"id": "book-club-pad-email-signup-2026-11-26", "date": "2026-11-26", "status": "open", "title": "Book club pad: sign up by email", "summary": "The book club pad now has an email sign-up in its Join section, and a short popup offers the same sign-up when you are about to leave the page."},
     {
