@@ -135,6 +135,20 @@ test('session labels name the meeting by date and title', async () => {
   assert.equal(l.processText, 'How this meeting changed the process page');
 });
 
+test('a session page shows the session week, not the meeting date', async () => {
+  const { sessionSectionLabels, sessionWeekLabel } = await import('../src/lib/sessions/session-labels.ts');
+  assert.equal(sessionWeekLabel('2026-11-23'), 'November 23–29');
+  assert.equal(sessionWeekLabel('2026-11-23', { year: true }), 'November 23–29, 2026');
+  assert.equal(sessionWeekLabel('2026-11-30'), 'November 30 – December 6');
+  assert.equal(sessionWeekLabel('2026-11-30', { year: true }), 'November 30 – December 6, 2026');
+  assert.equal(sessionWeekLabel('2026-12-28'), 'December 28, 2026 – January 3, 2027');
+  const l = sessionSectionLabels({ date: '2026-11-23', meetingTitle: 'Ballot results', seriesTitle: 'DP Listening' });
+  assert.equal(l.vote, 'Vote on the November 23–29 ballot');
+  assert.equal(l.chat, 'Session chat: November 23–29');
+  // The meeting's own record keeps the meeting's date.
+  assert.equal(l.transcript, 'Transcript: Monday 23 Nov 2026, Ballot results');
+});
+
 test('every phase step links to a section; "Voting open" jumps to the vote', async () => {
   const { DEFAULT_PHASE_ANCHORS, SESSION_PHASES, phaseCallToAction } = await import('../src/lib/sessions/session-phases.ts');
   for (const p of SESSION_PHASES) assert.ok(DEFAULT_PHASE_ANCHORS[p], p);

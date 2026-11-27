@@ -65,7 +65,7 @@ export const SESSION_2026_11_23: SessionOccurrence = {
   ],
   related: [
     {
-      label: 'The 16 November session: ballot, full results and record',
+      label: 'The November 16–22 session: ballot, full results and record',
       href: '/events/meta-governance-2026-11-16',
     },
   ],

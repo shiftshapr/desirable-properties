@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { meetingLongDate, meetingShortDate, type MeetingRef } from '@/lib/sessions/session-labels';
+import { sessionWeekLabel, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { PhaseTone } from '@/lib/sessions/session-phases';
 import SessionAnchors from './SessionAnchors';
 import SessionBreadcrumbs from './SessionBreadcrumbs';
@@ -45,22 +45,27 @@ export default function SessionPageShell({
   children,
 }: Props) {
   const t = PHASE_TONE[tone];
+  // Every session page shows the session's week ("November 23–29"), never the meeting's date alone: the meeting is
+  // one day, the session (review, screening, vote) is the week (owner, 27 Nov 2026). Pages say the meeting day in
+  // their whenLine.
+  const shortLabel = sessionWeekLabel(meeting.date);
+  const longLabel = sessionWeekLabel(meeting.date, { year: true });
   return (
     <main id="top" className={`session-page mx-auto w-full min-w-0 px-4 py-8 text-slate-200 sm:px-6 sm:py-12 ${className}`}>
       <SessionAnchors />
       <SessionStickyHeader
         watchId="session-page-header"
-        dateLabel={meetingShortDate(meeting.date)}
+        dateLabel={shortLabel}
         meetingTitle={meeting.meetingTitle}
         phaseLabel={phaseLabel}
         tone={tone}
         cta={stickyCta}
       />
       {banner}
-      <SessionBreadcrumbs meeting={meeting} dateHref={dateHref} />
+      <SessionBreadcrumbs meeting={meeting} dateHref={dateHref} dateLabel={shortLabel} />
       <header id="session-page-header" className="mt-6">
         <p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium text-cyan-300">
-          <span className="uppercase tracking-[0.12em]">{meetingLongDate(meeting.date)}</span>
+          <span className="uppercase tracking-[0.12em]">{longLabel}</span>
           {phaseLabel ? (
             <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold normal-case tracking-normal ${t.pill}`}>
               {phaseLabel}
