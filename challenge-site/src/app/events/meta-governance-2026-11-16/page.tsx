@@ -39,7 +39,7 @@ import {
   type MetaGovTurn,
 } from '@/lib/meta-governance-2026-11-16-event';
 import { sessionDeepiContext } from '@/lib/sessions/session-deepi-context';
-import { meetingShortDate, sessionSectionLabels, type MeetingRef } from '@/lib/sessions/session-labels';
+import { meetingShortDate, sessionSectionLabels, sessionWeekLabel, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
 import { effectiveStatus } from '@/lib/ballots/ballot-core';
 import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
@@ -52,13 +52,13 @@ import { SITE_NAME } from '@/lib/site-metadata';
 export const dynamic = 'force-dynamic';
 
 const DESCRIPTION =
-  'The DP Meta-Governance listening session of 16 November 2026: the record, the draft ballot, the community review, council screening and the vote, all on one page.';
+  'The DP Meta-Governance listening session of November 16–22, 2026: the record, the draft ballot, the community review, council screening and the vote, all on one page.';
 
 const MEETING: MeetingRef = { date: SESSION.date, meetingTitle: SESSION.meetingTitle, seriesTitle: SESSION.title };
 const LABELS = sessionSectionLabels(MEETING);
 
 export const metadata: Metadata = {
-  title: `${SESSION.meetingTitle}, ${META_GOV_DATE_LABEL} (${META_GOV_TITLE}) | ${SITE_NAME}`,
+  title: `${SESSION.meetingTitle}, ${sessionWeekLabel(SESSION.date, { year: true })} (${META_GOV_TITLE}) | ${SITE_NAME}`,
   description: DESCRIPTION,
   alternates: { canonical: META_GOV_EVENT_PATH },
   // Not for search engines: whether meeting transcripts are public is not yet a settled policy.
@@ -112,10 +112,11 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
     <>
     <SessionPageShell
       meeting={MEETING}
+      sessionWeek
       dateHref="/roundups/2026-11-16"
       whenLine={
         <>
-          {META_GOV_TIME_LABEL} · Zoom ·{' '}
+          Meeting held {META_GOV_DATE_LABEL}, {META_GOV_TIME_LABEL} · Zoom ·{' '}
           <a href={META_GOV_LUMA_URL} className={linkClass} rel="noopener noreferrer">
             Luma
           </a>
