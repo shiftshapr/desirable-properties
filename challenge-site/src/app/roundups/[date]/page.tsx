@@ -11,6 +11,8 @@ import SessionCollapsible from '@/components/sessions/SessionCollapsible';
 import SessionInvite from '@/components/sessions/SessionInvite';
 import SessionPageShell from '@/components/sessions/SessionPageShell';
 import BallotResultsSummary from '@/components/sessions/BallotResultsSummary';
+import BookClubStartsBlock from '@/components/sessions/BookClubStartsBlock';
+import { BOOK_CLUB } from '@/data/book-club';
 import { meetingLongDate, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { PhaseTone } from '@/lib/sessions/session-phases';
 
@@ -111,6 +113,9 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
   // Once a held session's page carries ballot results, the session-page button sits in that results section
   // instead of at the top, and the one-line intro is dropped (owner, 24 Nov 2026).
   const resultsCarryCta = Boolean(ended && event.ballotResults && primary);
+  // The session the book club starts in carries the book club block: first until the meeting is over, lower
+  // down afterwards (owner, 27 Nov 2026).
+  const bookClubStarts = BOOK_CLUB.meetings[0]?.id === event.date;
   return (
     <SessionPageShell
       meeting={meeting}
@@ -122,6 +127,8 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
       stickyCta={primary ? { label: primary.label.replace('Go to the session page', 'Session page'), href: primary.href } : null}
       className="max-w-3xl"
     >
+      {bookClubStarts && !ended ? <BookClubStartsBlock on="session" className="mt-6" /> : null}
+
       {resultsCarryCta ? null : <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
         {primary ? (
           <a href={primary.href} className="inline-flex rounded-lg bg-cyan-300 px-6 py-3 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
@@ -174,6 +181,8 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
       ) : null}
 
       <RaisedBetweenSessions slugs={event.raisedBetweenSessions} />
+
+      {bookClubStarts && ended ? <BookClubStartsBlock on="session" /> : null}
 
       {event.focus.startsWith('DP Listening Experiment') ? (
         <section id="also-open" className="mt-8 scroll-mt-24">
